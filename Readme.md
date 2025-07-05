@@ -29,6 +29,22 @@ shared-typeorm-microservice-arch/
 - In a **monorepo**, the shared package is imported via a relative path.
 - In a **polyrepo**, the shared folder can be published as an npm package (`@yourorg/shared`) and versioned independently.
 
+## 📦 Shared Versioning and Reuse
+
+The shared package is fully versioned (package.json) and can be reused across services.
+You can bump versions with:
+
+```bash
+npm version patch # or minor / major
+```
+
+Later, this package can be published to an internal or public npm registry.
+Services can consume different versions if needed:
+
+```bash
+npm install shared@1.0.1
+```
+
 ## 🚀 Getting Started
 
 ```bash
