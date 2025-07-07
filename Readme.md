@@ -61,6 +61,31 @@ npm install
 npm run start
 ```
 
+## Sahred Data Model
+
+🧍 User
+id: number (PK)
+name: string
+email: string (unique)
+role: enum → 'owner' | 'renter'
+listings: Listing[] (one-to-many)
+bookings: Booking[] (one-to-many)
+🏠 Listing
+id: number (PK)
+title: string
+description: string
+location: string
+pricePerNight: number
+owner: User (many-to-one)
+bookings: Booking[] (one-to-many)
+📅 Booking
+id: number (PK)
+fromDate: string (date)
+toDate: string (date)
+status: string (default: confirmed)
+user: User (many-to-one)
+listing: Listing (many-to-one)
+
 ## 🧪 Bonus Goals (Work in Progress)
 
 - GitHub Actions CI: build/test shared code

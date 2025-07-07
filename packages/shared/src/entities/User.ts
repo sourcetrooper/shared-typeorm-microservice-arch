@@ -6,20 +6,20 @@ import { Booking } from './Booking';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column({ unique: true })
-  email: string;
+  email!: string;
 
   @Column({ type: 'enum', enum: ['owner', 'renter'], default: 'renter' })
-  role: 'owner' | 'renter';
+  role!: 'owner' | 'renter';
 
   @OneToMany(() => Listing, (listing) => listing.owner)
-  listings: Listing[];
+  listings!: Listing[];
 
   @OneToMany(() => Booking, (booking) => booking.user)
-  bookings: Booking[];
+  bookings!: Booking[];
 }

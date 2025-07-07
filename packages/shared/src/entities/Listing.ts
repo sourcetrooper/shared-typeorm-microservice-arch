@@ -6,23 +6,23 @@ import { Booking } from './Booking';
 @Entity()
 export class Listing {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  title: string;
+  title!: string;
 
   @Column('text')
-  description: string;
+  description!: string;
 
   @Column()
-  location: string;
+  location!: string;
 
   @Column('decimal')
-  pricePerNight: number;
+  pricePerNight!: number;
 
   @ManyToOne(() => User, (user) => user.listings)
-  owner: User;
+  owner!: User;
 
   @OneToMany(() => Booking, (booking) => booking.listing)
-  bookings: Booking[];
+  bookings!: Booking[];
 }

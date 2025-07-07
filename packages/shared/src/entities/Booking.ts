@@ -6,20 +6,20 @@ import { Listing } from './Listing';
 @Entity()
 export class Booking {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ type: 'date' })
-  fromDate: string;
+  fromDate!: string;
 
   @Column({ type: 'date' })
-  toDate: string;
+  toDate!: string;
 
-  @Column({ default: 'confirmed' })
-  status: string;
+  @Column({ type: 'enum', enum: ['confirmed', 'cancelled', 'pending'], default: 'confirmed' })
+  status!: 'confirmed' | 'cancelled' | 'pending';
 
   @ManyToOne(() => User, (user) => user.bookings)
-  user: User;
+  user!: User;
 
   @ManyToOne(() => Listing, (listing) => listing.bookings)
-  listing: Listing;
+  listing!: Listing;
 }
