@@ -86,13 +86,72 @@ status: string (default: confirmed)
 user: User (many-to-one)
 listing: Listing (many-to-one)
 
-## 🧪 Bonus Goals (Work in Progress)
+## 🧠 Architecture Strategy & Case Study Q&A
 
-- GitHub Actions CI: build/test shared code
-- TypeScript separation: DB entities vs Transport DTOs
-- Shared validation logic using `class-validator`
-- Unit test examples for services
-- API-first design: OpenAPI / Swagger setup
+---
+
+### 1. How will you structure shared code (e.g., entity models, DTOs, validation logic)?
+
+We use a `packages/shared` package that contains:
+
+- **Entities** → `src/entities` (TypeORM models like `User`, `Listing`, `Booking`)
+- **DTOs** → `src/dtos` (e.g., `CreateUserDTO`, `CreateBookingDTO`)
+- **Validation logic** → via decorators from `class-validator` on the DTOs
+- A **barrel file** (`index.ts`) to expose all shared items cleanly
+
+This ensures type safety, code reuse, and clean separation of concerns.
+
+---
+
+### 2. How will you ensure entities stay in sync between services?
+
+All services import shared models via:
+
+- **Monorepo**: local path (e.g., `import { User } from '../../packages/shared'`)
+- **Polyrepo**: versioned internal NPM package (`@shared/core@1.0.2`)
+
+Entities remain in sync by:
+
+- Bumping version numbers after updates
+- Keeping changelog
+- Updating only when each service is ready (version isolation)
+
+---
+
+### 3. How will you handle migrations and database schema evolution across services?
+
+- Migrations live inside **Service A** (not the shared package)
+- Shared only contains entities, not migrations
+- Service A is responsible for running all DB migrations
+
+This avoids migration conflicts between services and keeps schema ownership clear.
+If another service (like B) needs to update schema, coordination is needed.
+
+---
+
+### 4. How will you protect against tight coupling between services?
+
+- Services only depend on the shared **models, DTOs, and types**, never logic
+- No direct service-to-service calls (communication via API or message queues)
+- Shared code is versioned and consumed as a package, not live linked
+
+This keeps services independently deployable, testable, and evolvable.
+
+---
+
+### 5. How do you add new models without breaking other services?
+
+1. Create entity in `src/entities`
+2. Optionally add matching DTO in `src/dtos`
+3. Update `index.ts` (barrel file)
+4. Run `npm run build`
+5. Update **CHANGELOG.md** (BEFORE version bump)
+6. Run `npm version patch` / `minor` / `major`
+7. Run `git push && git push --tags`
+
+Services can then update shared dependency only when ready. No breaking changes unless they explicitly upgrade.
+
+---
 
 ## 📝 License
 
