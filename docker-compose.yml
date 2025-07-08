@@ -14,7 +14,9 @@ services:
       - db_data:/var/lib/mysql
 
   service-a:
-    build: ./services/service-a
+    build:
+      context: .
+      dockerfile: ./services/service-a/Dockerfile
     container_name: service-a
     depends_on:
       - db

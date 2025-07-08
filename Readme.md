@@ -45,6 +45,12 @@ Services can consume different versions if needed:
 npm install shared@1.0.1
 ```
 
+Note:
+
+- Remove local install logic and path aliases from `tsconfig.json`
+- Update package.json to use the npm version of `@your-scope/shared`
+- Clean up Dockerfiles by removing manual COPY and npm install `./shared` steps
+
 ## 🚀 Getting Started
 
 ```bash

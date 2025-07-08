@@ -6,7 +6,7 @@
     "outDir": "dist",
     "baseUrl": "./",
     "paths": {
-      "@shared/*": ["../../packages/shared/src/*"]
+      "shared": ["./shared/dist", "../../packages/shared/dist"]
     },
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
