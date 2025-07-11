@@ -3,12 +3,20 @@ import 'reflect-metadata';
 import express from 'express';
 import { AppDataSource } from './data-source';
 import { Request, Response } from 'express';
+import { Listing } from 'shared';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.get('/health', (_req: Request, res: Response) => {
   res.send('OK');
+});
+
+app.get('/listings', async (_req, res) => {
+  const listings = await AppDataSource.getRepository(Listing).find({
+    relations: ['owner'],
+  });
+  res.json(listings);
 });
 
 AppDataSource.initialize()
