@@ -3,20 +3,24 @@ import 'reflect-metadata';
 import express from 'express';
 import { AppDataSource } from './data-source';
 import { Request, Response } from 'express';
-import { Listing } from 'shared';
+import userRoutes from './routes/user.routes';
+import listingRoutes from './routes/listing.routes';
+import bookingRoutes from './routes/booking.routes';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Routes
+app.use('/users', userRoutes);
+app.use('/listings', listingRoutes);
+app.use('/bookings', bookingRoutes);
+
 app.get('/health', (_req: Request, res: Response) => {
   res.send('OK');
-});
-
-app.get('/listings', async (_req, res) => {
-  const listings = await AppDataSource.getRepository(Listing).find({
-    relations: ['owner'],
-  });
-  res.json(listings);
 });
 
 AppDataSource.initialize()
