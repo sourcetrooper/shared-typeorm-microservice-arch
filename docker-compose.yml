@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   db:
@@ -30,18 +30,16 @@ services:
       - "3000:3000"
 
   service-b:
-    build: ./services/service-b
+    build:
+      context: .
+      dockerfile: ./services/service-b/Dockerfile
     container_name: service-b
     depends_on:
-      - db
+      - service-a
     environment:
-      DB_HOST: db
-      DB_PORT: 3306
-      DB_USERNAME: root
-      DB_PASSWORD: root
-      DB_NAME: shared_arch
+      SERVICE_A_URL: http://service-a:3000
     ports:
-      - "3001:3001"
+      - "3001:4000"
 
 volumes:
   db_data:
