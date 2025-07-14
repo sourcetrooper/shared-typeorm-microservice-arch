@@ -1,7 +1,8 @@
 // eslint.config.js (Flat Config)
 import js from '@eslint/js';
 import globals from 'globals';
-import * as tseslint from 'typescript-eslint';
+import parser from '@typescript-eslint/parser';
+import plugin from '@typescript-eslint/eslint-plugin';
 import { defineConfig } from 'eslint/config';
 
 export default defineConfig([
@@ -18,17 +19,17 @@ export default defineConfig([
   {
     files: ['**/*.{ts,mts,cts}'],
     languageOptions: {
-      parser: tseslint.parser,
+      parser: parser,
       parserOptions: {
         project: './tsconfig.json',
       },
       globals: globals.browser,
     },
     plugins: {
-      '@typescript-eslint': tseslint.plugin,
+      '@typescript-eslint': plugin,
     },
     rules: {
-      ...tseslint.configs.recommended.rules,
+      ...plugin.configs.recommended.rules,
     },
   },
 ]);
