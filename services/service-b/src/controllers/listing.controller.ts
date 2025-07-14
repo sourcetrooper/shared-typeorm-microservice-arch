@@ -2,11 +2,6 @@ import { Request, Response } from 'express';
 import { ListingService } from '../services/listing.service';
 import { CreateListingDto } from 'shared';
 
-function getErrorMessage(error: unknown): string {
-    if (error instanceof Error) return error.message;
-    return 'Unknown error';
-  }
-
 export class ListingController {
     private listingService: ListingService;
 
@@ -33,4 +28,9 @@ export class ListingController {
             res.status(500).json({ message: getErrorMessage(error) });
         }
     }
+}
+
+function getErrorMessage(error: unknown): string {
+    if (error instanceof Error) return error.message;
+    return 'Unknown error';
 }

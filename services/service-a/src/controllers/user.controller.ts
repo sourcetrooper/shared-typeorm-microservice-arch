@@ -14,8 +14,8 @@ export class UserController {
             const userData: CreateUserDto = req.body;
             const user = await this.userService.createUser(userData);
             res.status(201).json(user);
-        } catch (error: any) {
-            res.status(400).json({ message: error?.message || 'Error creating user' });
+        } catch (error: unknown) {
+            res.status(400).json({ message: getErrorMessage(error) });
         }
     }
 
@@ -23,8 +23,8 @@ export class UserController {
         try {
             const users = await this.userService.getAllUsers();
             res.json(users);
-        } catch (error: any) {
-            res.status(500).json({ message: error?.message || 'Error fetching users' });
+        } catch (error: unknown) {
+            res.status(500).json({ message: getErrorMessage(error) });
         }
     }
 
@@ -37,8 +37,8 @@ export class UserController {
             } else {
                 res.status(404).json({ message: 'User not found' });
             }
-        } catch (error: any) {
-            res.status(500).json({ message: error?.message || 'Error fetching user' });
+        } catch (error: unknown) {
+            res.status(500).json({ message: getErrorMessage(error) });
         }
     }
 
@@ -52,8 +52,8 @@ export class UserController {
             } else {
                 res.status(404).json({ message: 'User not found' });
             }
-        } catch (error: any) {
-            res.status(400).json({ message: error?.message || 'Error updating user' });
+        } catch (error: unknown) {
+            res.status(400).json({ message: getErrorMessage(error) });
         }
     }
 
@@ -66,8 +66,13 @@ export class UserController {
             } else {
                 res.status(404).json({ message: 'User not found' });
             }
-        } catch (error: any) {
-            res.status(500).json({ message: error?.message || 'Error deleting user' });
+        } catch (error: unknown) {
+            res.status(500).json({ message: getErrorMessage(error) });
         }
     }
+}
+
+function getErrorMessage(error: unknown): string {
+    if (error instanceof Error) return error.message;
+    return 'Unknown error';
 }

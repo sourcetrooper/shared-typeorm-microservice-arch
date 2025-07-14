@@ -1,11 +1,6 @@
 import { Request, Response } from 'express';
 import { BookingService } from '../services/booking.service';
 
-function getErrorMessage(error: unknown): string {
-    if (error instanceof Error) return error.message;
-    return 'Unknown error';
-  }
-
 export class BookingController {
     private bookingService: BookingService;
 
@@ -31,3 +26,8 @@ export class BookingController {
         }
     }
 }
+
+function getErrorMessage(error: unknown): string {
+    if (error instanceof Error) return error.message;
+    return 'Unknown error';
+  }

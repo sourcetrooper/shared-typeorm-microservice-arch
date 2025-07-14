@@ -1,5 +1,5 @@
 import { AppDataSource } from './data-source';
-import { User, Listing, Booking } from 'shared';
+import { User, Listing } from 'shared';
 
 async function seed() {
   await AppDataSource.initialize();

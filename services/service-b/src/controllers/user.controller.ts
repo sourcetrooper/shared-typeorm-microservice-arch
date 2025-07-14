@@ -2,11 +2,6 @@ import { Request, Response } from 'express';
 import { UserService } from '../services/user.service';
 import { CreateUserDto } from 'shared';
 
-function getErrorMessage(error: unknown): string {
-    if (error instanceof Error) return error.message;
-    return 'Unknown error';
-  }
-
 export class UserController {
     private userService: UserService;
 
@@ -32,4 +27,9 @@ export class UserController {
             res.status(500).json({ message: getErrorMessage(error) });
         }
     }
+}
+
+function getErrorMessage(error: unknown): string {
+    if (error instanceof Error) return error.message;
+    return 'Unknown error';
 }

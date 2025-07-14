@@ -14,8 +14,8 @@ export class ListingController {
             const listingData: CreateListingDto = req.body;
             const listing = await this.listingService.createListing(listingData);
             res.status(201).json(listing);
-        } catch (error: any) {
-            res.status(400).json({ message: error?.message || 'Error creating listing' });
+        } catch (error: unknown) {
+            res.status(400).json({ message: getErrorMessage(error) });
         }
     }
 
@@ -23,8 +23,8 @@ export class ListingController {
         try {
             const listings = await this.listingService.getAllListings();
             res.json(listings);
-        } catch (error: any) {
-            res.status(500).json({ message: error?.message || 'Error fetching listings' });
+        } catch (error: unknown) {
+            res.status(500).json({ message: getErrorMessage(error) });
         }
     }
 
@@ -37,8 +37,8 @@ export class ListingController {
             } else {
                 res.status(404).json({ message: 'Listing not found' });
             }
-        } catch (error: any) {
-            res.status(500).json({ message: error?.message || 'Error fetching listing' });
+        } catch (error: unknown) {
+            res.status(500).json({ message: getErrorMessage(error) });
         }
     }
 
@@ -51,8 +51,8 @@ export class ListingController {
             } else {
                 res.status(404).json({ message: 'Listing not found' });
             }
-        } catch (error: any) {
-            res.status(400).json({ message: error?.message || 'Error updating listing' });
+        } catch (error: unknown) {
+            res.status(400).json({ message: getErrorMessage(error) });
         }
     }
 
@@ -65,8 +65,13 @@ export class ListingController {
             } else {
                 res.status(404).json({ message: 'Listing not found' });
             }
-        } catch (error: any) {
-            res.status(500).json({ message: error?.message || 'Error deleting listing' });
+        } catch (error: unknown) {
+            res.status(500).json({ message: getErrorMessage(error) });
         }
     }
+}
+
+function getErrorMessage(error: unknown): string {
+    if (error instanceof Error) return error.message;
+    return 'Unknown error';
 }
