@@ -1,6 +1,11 @@
 import { Request, Response } from 'express';
 import { BookingService } from '../services/booking.service';
 
+function getErrorMessage(error: unknown): string {
+    if (error instanceof Error) return error.message;
+    return 'Unknown error';
+  }
+
 export class BookingController {
     private bookingService: BookingService;
 
@@ -12,8 +17,8 @@ export class BookingController {
         try {
             const booking = await this.bookingService.createBooking(req.body);
             res.status(201).json(booking);
-        } catch (error: any) {
-            res.status(400).json({ message: error?.message || 'Error creating booking' });
+        } catch (error: unknown) {
+            res.status(400).json({ message: getErrorMessage(error) });
         }
     }
 
@@ -21,8 +26,8 @@ export class BookingController {
         try {
             const bookings = await this.bookingService.getAllBookings();
             res.status(200).json(bookings);
-        } catch (error: any) {
-            res.status(500).json({ message: error?.message || 'Error fetching bookings' });
+        } catch (error: unknown) {
+            res.status(500).json({ message:getErrorMessage(error) });
         }
     }
 }

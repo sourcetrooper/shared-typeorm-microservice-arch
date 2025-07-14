@@ -2,6 +2,11 @@ import { Request, Response } from 'express';
 import { ListingService } from '../services/listing.service';
 import { CreateListingDto } from 'shared';
 
+function getErrorMessage(error: unknown): string {
+    if (error instanceof Error) return error.message;
+    return 'Unknown error';
+  }
+
 export class ListingController {
     private listingService: ListingService;
 
@@ -15,8 +20,8 @@ export class ListingController {
             // Optionally, add validation here
             const listing = await this.listingService.createListing(listingData);
             res.status(201).json(listing);
-        } catch (error: any) {
-            res.status(400).json({ message: error?.message || 'Error creating listing' });
+        } catch (error: unknown) {
+            res.status(400).json({ message: getErrorMessage(error) });
         }
     }
 
@@ -24,8 +29,8 @@ export class ListingController {
         try {
             const listings = await this.listingService.getAllListings();
             res.status(200).json(listings);
-        } catch (error: any) {
-            res.status(500).json({ message: error?.message || 'Error fetching listings' });
+        } catch (error: unknown) {
+            res.status(500).json({ message: getErrorMessage(error) });
         }
     }
 }
