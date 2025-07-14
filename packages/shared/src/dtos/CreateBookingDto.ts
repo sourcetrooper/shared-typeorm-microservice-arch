@@ -1,4 +1,4 @@
-import { IsDateString, IsEnum, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsDateString, IsEnum, IsNumber } from 'class-validator';
 
 export class CreateBookingDto {
   @IsDateString()
