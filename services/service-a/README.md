@@ -18,6 +18,7 @@ This service **interacts directly with the database** and implements full CRUD f
 - Migrations and database seeding logic
 - Validation and serialization via TypeScript types
 - Organized by controllers, services, and routes
+- Returns responses as DTOs (Data Transfer Objects) to ensure a clean, stable API contract
 
 ## 🗂 Folder Structure
 
