@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { UserService } from '../services/user.service';
 import { CreateUserDto } from 'shared';
+import { toUserResponseDto } from '../utils/entityMappers';
 
 export class UserController {
     private userService: UserService;
@@ -13,7 +14,7 @@ export class UserController {
         try {
             const userData: CreateUserDto = req.body;
             const user = await this.userService.createUser(userData);
-            res.status(201).json(user);
+            res.status(201).json(toUserResponseDto(user));
         } catch (error: unknown) {
             res.status(400).json({ message: getErrorMessage(error) });
         }
@@ -22,7 +23,7 @@ export class UserController {
     async getAllUsers(req: Request, res: Response): Promise<void> {
         try {
             const users = await this.userService.getAllUsers();
-            res.json(users);
+            res.json(users.map(toUserResponseDto));
         } catch (error: unknown) {
             res.status(500).json({ message: getErrorMessage(error) });
         }
@@ -33,7 +34,7 @@ export class UserController {
             const id = parseInt(req.params.id);
             const user = await this.userService.getUserById(id);
             if (user) {
-                res.json(user);
+                res.json(toUserResponseDto(user));
             } else {
                 res.status(404).json({ message: 'User not found' });
             }
@@ -48,7 +49,7 @@ export class UserController {
             const userData = req.body;
             const user = await this.userService.updateUser(id, userData);
             if (user) {
-                res.json(user);
+                res.json(toUserResponseDto(user));
             } else {
                 res.status(404).json({ message: 'User not found' });
             }

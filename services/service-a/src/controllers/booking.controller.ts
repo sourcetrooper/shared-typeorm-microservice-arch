@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { BookingService } from '../services/booking.service';
 import { CreateBookingDto } from 'shared';
+import { toBookingResponseDto } from '../utils/entityMappers';
 
 export class BookingController {
     private bookingService: BookingService;
@@ -13,7 +14,7 @@ export class BookingController {
         try {
             const bookingData: CreateBookingDto = req.body;
             const booking = await this.bookingService.createBooking(bookingData);
-            res.status(201).json(booking);
+            res.status(201).json(toBookingResponseDto(booking));
         } catch (error: unknown) {
             res.status(400).json({ message: getErrorMessage(error) });
         }
@@ -22,7 +23,7 @@ export class BookingController {
     async getAllBookings(req: Request, res: Response): Promise<void> {
         try {
             const bookings = await this.bookingService.getAllBookings();
-            res.json(bookings);
+            res.json(bookings.map(toBookingResponseDto));
         } catch (error: unknown) {
             res.status(500).json({ message: getErrorMessage(error) });
         }
@@ -33,7 +34,7 @@ export class BookingController {
             const id = parseInt(req.params.id);
             const booking = await this.bookingService.getBookingById(id);
             if (booking) {
-                res.json(booking);
+                res.json(toBookingResponseDto(booking));
             } else {
                 res.status(404).json({ message: 'Booking not found' });
             }
@@ -47,7 +48,7 @@ export class BookingController {
             const id = parseInt(req.params.id);
             const booking = await this.bookingService.updateBooking(id, req.body);
             if (booking) {
-                res.json(booking);
+                res.json(toBookingResponseDto(booking));
             } else {
                 res.status(404).json({ message: 'Booking not found' });
             }
