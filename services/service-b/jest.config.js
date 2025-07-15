@@ -1,5 +1,4 @@
 const { createDefaultPreset } = require("ts-jest");
-
 const tsJestTransformCfg = createDefaultPreset().transform;
 
 /** @type {import("jest").Config} **/
@@ -8,7 +7,6 @@ module.exports = {
   transform: {
     ...tsJestTransformCfg,
   },
-
-  // This is added to ignore compiled tests
-  testPathIgnorePatterns: ["/node_modules/", "/dist/"],
+  testMatch: ["src/**/__tests__/**/*.test.ts", "src/**/*.test.ts", "src/**/*.spec.ts"],
+  testPathIgnorePatterns: ["/node_modules/", "/dist/", "/build/"],
 };

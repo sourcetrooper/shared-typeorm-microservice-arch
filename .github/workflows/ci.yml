@@ -14,7 +14,7 @@ on:
     branches: [main]
 
 jobs:
-  # Build shared package first
+  # Test and build shared package first
   build-shared:
     runs-on: ubuntu-latest
     steps:
@@ -38,15 +38,15 @@ jobs:
           cd packages/shared
           if [ -f package.json ] && npm run | grep -q "lint"; then npm run lint; else echo "No lint script"; fi
 
-      - name: Build
-        run: |
-          cd packages/shared
-          if [ -f package.json ] && npm run | grep -q "build"; then npm run build; else echo "No build script"; fi
-
       - name: Test
         run: |
           cd packages/shared
           if [ -f package.json ] && npm run | grep -q "test"; then npm test; else echo "No test script"; fi
+
+      - name: Build
+        run: |
+          cd packages/shared
+          if [ -f package.json ] && npm run | grep -q "build"; then npm run build; else echo "No build script"; fi
 
       # Cache the built shared package
       - name: Cache shared build
@@ -55,7 +55,7 @@ jobs:
           path: packages/shared
           key: shared-build-${{ github.sha }}
 
-  # Build services after shared is built
+  # Test and build services after shared is built
   build-services:
     runs-on: ubuntu-latest
     needs: build-shared
@@ -97,12 +97,12 @@ jobs:
           cd ${{ matrix.service }}
           if [ -f package.json ] && npm run | grep -q "lint"; then npm run lint; else echo "No lint script"; fi
 
-      - name: Build
-        run: |
-          cd ${{ matrix.service }}
-          if [ -f package.json ] && npm run | grep -q "build"; then npm run build; else echo "No build script"; fi
-
       - name: Test
         run: |
           cd ${{ matrix.service }}
           if [ -f package.json ] && npm run | grep -q "test"; then npm test; else echo "No test script"; fi
+
+      - name: Build
+        run: |
+          cd ${{ matrix.service }}
+          if [ -f package.json ] && npm run | grep -q "build"; then npm run build; else echo "No build script"; fi
