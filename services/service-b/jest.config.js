@@ -8,4 +8,7 @@ module.exports = {
   transform: {
     ...tsJestTransformCfg,
   },
+
+  // This is added to ignore compiled tests
+  testPathIgnorePatterns: ["/node_modules/", "/dist/"],
 };
