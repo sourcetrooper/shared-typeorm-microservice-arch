@@ -67,6 +67,8 @@ npm install
 npm run start
 ```
 
+> **Note:** If you start Service A outside Docker, you must have a MySQL server running and accessible at the configured host/port (default: `localhost:3306`), with the correct credentials and database name (`shared_arch`).
+
 ## Sahred Data Model
 
 🧍 User

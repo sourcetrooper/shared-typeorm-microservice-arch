@@ -25,10 +25,15 @@ src/
 ## 🔧 Usage
 
 ```bash
-# Run the service
+# Run the service locally
 npm install
 npm start
 ```
+
+> **Swagger UI:**
+>
+> - When running locally (npm start): http://localhost:4000/docs
+> - When running in Docker: http://localhost:3001/docs
 
 ## 🥪 Endpoints
 
