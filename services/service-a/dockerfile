@@ -1,14 +1,23 @@
-# inside services/service-a/Dockerfile
 FROM node:20-alpine
+
 WORKDIR /app
 
-# Copy service-a files
-COPY services/service-a/ .
+# Copy service-a and shared source
+COPY services/service-a/ ./service-a/
+COPY packages/shared/ ./shared/
 
-# Copy shared package
-COPY packages/shared/ ./shared
-
-RUN npm install ./shared
+# Install dependencies from service-a
+WORKDIR /app/service-a
 RUN npm install
 
+# Build shared package
+WORKDIR /app/shared
+RUN npm install && npm run build
+
+# Link shared package into service-a
+WORKDIR /app/service-a
+RUN npm install ../shared
+
+# Back to service-a to start the app
+WORKDIR /app/service-a
 CMD ["npm", "run", "start"]

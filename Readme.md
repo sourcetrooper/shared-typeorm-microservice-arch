@@ -69,6 +69,25 @@ npm run start
 
 > **Note:** If you start Service A outside Docker, you must have a MySQL server running and accessible at the configured host/port (default: `localhost:3306`), with the correct credentials and database name (`shared_arch`).
 
+---
+
+### ⏩ After Docker Setup: Run Migrations & Seed
+
+Once all services are running, follow these steps to initialize the database:
+
+```bash
+# 1. Log into the service-a container
+$ docker exec -it service-a sh
+
+# 2. Run migrations
+$ npm run migration:run
+
+# 3. Seed the database
+$ npm run seed
+```
+
+You can now use Service B endpoints to interact with Service A.
+
 ## Sahred Data Model
 
 🧍 User
