@@ -1,4 +1,5 @@
 import { UserService } from '../user.service';
+import { CreateUserDto } from 'shared';
 jest.mock('typeorm');
 
 const mockRepo = {
@@ -24,11 +25,11 @@ describe('UserService', () => {
   });
 
   it('should create and save a user', async () => {
-    const data = { name: 'Test', email: 'test@test.com', role: 'owner' };
+    const data: CreateUserDto = { name: 'Test', email: 'test@test.com', role: 'owner' };
     const user = { ...data, id: 1 };
     mockRepo.create.mockReturnValue(user);
     mockRepo.save.mockResolvedValue(user);
-    const result = await service.createUser(data as any);
+    const result = await service.createUser(data);
     expect(mockRepo.create).toHaveBeenCalledWith(data);
     expect(mockRepo.save).toHaveBeenCalledWith(user);
     expect(result).toEqual(user);

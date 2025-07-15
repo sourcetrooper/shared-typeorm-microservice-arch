@@ -3,19 +3,17 @@ import js from '@eslint/js';
 import globals from 'globals';
 import parser from '@typescript-eslint/parser';
 import plugin from '@typescript-eslint/eslint-plugin';
-import { defineConfig } from 'eslint/config';
 
-export default defineConfig([
-  // Base JS config
+export default [
+  // Base JS config for Node.js files
   {
     files: ['**/*.{js,mjs,cjs}'],
     languageOptions: {
-      globals: globals.browser,
+      globals: globals.node,
     },
     ...js.configs.recommended,
   },
-
-  // TypeScript config
+  // TypeScript config for Node.js
   {
     files: ['**/*.{ts,mts,cts}'],
     languageOptions: {
@@ -23,7 +21,7 @@ export default defineConfig([
       parserOptions: {
         project: './tsconfig.json',
       },
-      globals: globals.browser,
+      globals: globals.node,
     },
     plugins: {
       '@typescript-eslint': plugin,
@@ -32,4 +30,4 @@ export default defineConfig([
       ...plugin.configs.recommended.rules,
     },
   },
-]);
+];

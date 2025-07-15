@@ -1,5 +1,6 @@
 import { UserService } from '../user.service';
 import axios from 'axios';
+import { CreateUserDto } from 'shared';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -12,10 +13,10 @@ describe('UserService', () => {
   });
 
   it('should create a user via POST', async () => {
-    const data = { name: 'Test', email: 'test@test.com', role: 'owner' };
+    const data: CreateUserDto = { name: 'Test', email: 'test@test.com', role: 'owner' };
     const responseData = { ...data, id: 1 };
     mockedAxios.post.mockResolvedValue({ data: responseData });
-    const result = await service.createUser(data as any);
+    const result = await service.createUser(data);
     expect(mockedAxios.post).toHaveBeenCalledWith(expect.stringContaining('/users'), data);
     expect(result).toEqual(responseData);
   });

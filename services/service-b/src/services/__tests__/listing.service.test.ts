@@ -1,5 +1,6 @@
 import { ListingService } from '../listing.service';
 import axios from 'axios';
+import { CreateListingDto } from 'shared';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -12,10 +13,10 @@ describe('ListingService', () => {
   });
 
   it('should create a listing via POST', async () => {
-    const data = { title: 'Test', description: 'desc', location: 'loc', pricePerNight: 100, owner: 1 };
+    const data: CreateListingDto = { title: 'Test', description: 'desc', location: 'loc', pricePerNight: 100, ownerId: 1 };
     const responseData = { ...data, id: 1 };
     mockedAxios.post.mockResolvedValue({ data: responseData });
-    const result = await service.createListing(data as any);
+    const result = await service.createListing(data);
     expect(mockedAxios.post).toHaveBeenCalledWith(expect.stringContaining('/listings'), data);
     expect(result).toEqual(responseData);
   });

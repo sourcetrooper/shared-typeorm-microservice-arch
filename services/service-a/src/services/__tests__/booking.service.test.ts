@@ -1,4 +1,5 @@
 import { BookingService } from '../booking.service';
+import { CreateBookingDto } from 'shared';
 jest.mock('typeorm');
 
 const mockRepo = {
@@ -24,11 +25,11 @@ describe('BookingService', () => {
   });
 
   it('should create and save a booking', async () => {
-    const data = { fromDate: '2024-01-01', toDate: '2024-01-02', status: 'confirmed', user: 1, listing: 1 };
+    const data: CreateBookingDto = { fromDate: '2024-01-01', toDate: '2024-01-02', status: 'confirmed', userId: 1, listingId: 1 };
     const booking = { ...data, id: 1 };
     mockRepo.create.mockReturnValue(booking);
     mockRepo.save.mockResolvedValue(booking);
-    const result = await service.createBooking(data as any);
+    const result = await service.createBooking(data);
     expect(mockRepo.create).toHaveBeenCalledWith(data);
     expect(mockRepo.save).toHaveBeenCalledWith(booking);
     expect(result).toEqual(booking);

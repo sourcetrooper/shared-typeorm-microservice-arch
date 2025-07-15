@@ -1,6 +1,5 @@
 import { ListingService } from '../listing.service';
-import { Repository } from 'typeorm';
-import { Listing } from 'shared';
+import { CreateListingDto } from 'shared';
 
 jest.mock('typeorm');
 
@@ -29,11 +28,11 @@ describe('ListingService', () => {
   });
 
   it('should create and save a listing', async () => {
-    const data = { title: 'Test', description: 'desc', location: 'loc', pricePerNight: 100, owner: 1 };
+    const data: CreateListingDto = { title: 'Test', description: 'desc', location: 'loc', pricePerNight: 100, ownerId: 1 };
     const listing = { ...data, id: 1 };
     mockRepo.create.mockReturnValue(listing);
     mockRepo.save.mockResolvedValue(listing);
-    const result = await service.createListing(data as any);
+    const result = await service.createListing(data);
     expect(mockRepo.create).toHaveBeenCalledWith(data);
     expect(mockRepo.save).toHaveBeenCalledWith(listing);
     expect(result).toEqual(listing);
